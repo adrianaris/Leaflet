@@ -218,4 +218,79 @@ describe('Util', function () {
 		expect(L.Util.isArray('blabla')).to.be(false);
 		expect(L.Util.isArray({0: 1, 1: 2})).to.be(false);
 	});
+
+	describe('#objMerge',  function () {
+		var target = {
+			heading: 'Default heading',
+			configurationObject: {
+				amount: 20,
+				currency: 'euro',
+				sing: 'e'
+			},
+			mainText: 'Hello world',
+			array1: [1, 2],
+			array2: undefined,
+			array3: 'a',
+			array4: [1, 2]
+		};
+		target.self = target;
+
+		var source = {
+			mainText: 'Boom!',
+			configurationObject: {
+				amount: 3,
+			},
+			array1: [1, 3],
+			array2: [1, 2],
+			array3: [2, 3],
+			array4: undefined
+		};
+		source.self = source;
+		console.log(L.Util.objMerge(target, source));
+
+		var merged = {
+			heading: 'Default heading',
+			configurationObject: {amount: 3, currency: 'euro', sign: 'e'},
+			mainText: 'Boom!',
+			array1: [1, 2, 3],
+			array2: [1, 2],
+			array3: ['a', 2, 3],
+			array4: [1, 2],
+			self: source
+		};
+
+		function isEqual(obj1, obj2) {
+			var visited = new Set();
+			return _isEqual(obj1, obj2, visited);
+		}
+
+		function _isEqual(obj1, obj2, visited) {
+			var keys1 = Object.getOwnPropertyNames(obj1);
+			var keys2 = Object.getOwnPropertyNames(obj2);
+
+			if (keys1.length !== keys2.length) {
+				return false;
+			}
+			for (let i = 0; i < keys1.length; i++) {
+				let val1 = obj1[keys1[i]];
+				let val2 = obj2[keys2[i]];
+				if (visited.has(val2)) {
+					continue;
+				}
+				visited.add(val2);
+				let areObjects = isObject(val1) && isObject(val2);
+				if (areObjects && !_isEqual(val1, val2, visited) || !areObjects && val1 !== val2) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		function isObject(obj) {
+			return obj && typeof obj === 'object';
+		}
+
+		expect(isEqual(L.Util.objMerge(target, source), merged)).to.be(true);
+	});
 });
+

@@ -113,14 +113,18 @@ export function splitWords(str) {
 	return trim(str).split(/\s+/);
 }
 
-// @function setOptions(obj: Object, options: Object): Object
+// @function setOptions(obj: Object, options: Object, deep?: Boolean): Object
 // Merges the given properties to the `options` of the `obj` object, returning the resulting options. See `Class options`. Has an `L.setOptions` shortcut.
-export function setOptions(obj, options) {
+export function setOptions(obj, options, deep) {
 	if (!Object.prototype.hasOwnProperty.call(obj, 'options')) {
 		obj.options = obj.options ? create(obj.options) : {};
 	}
-	for (var i in options) {
-		obj.options[i] = options[i];
+	if (deep === true) {
+		obj.options =  objMerge(obj.options, options);
+	} else {
+		for (var i in options) {
+			obj.options[i] = options[i];
+		}
 	}
 	return obj.options;
 }
@@ -221,4 +225,42 @@ export function cancelAnimFrame(id) {
 	if (id) {
 		cancelFn.call(window, id);
 	}
+}
+
+// @function objMerge(target: Object, source: Object): Object
+// Deep merges objects
+export function objMerge(target, source) {
+	// a set that gets us out of circular references
+	const keySet = new Set();
+	return _merge(target, source, keySet);
+}
+
+// @function _isObject(obj: Object): Boolean
+// Test whether the argument is an object, excluding array
+export function _isObject(obj) {
+	return (obj && typeof obj === 'object' && !Array.isArray(obj));
+}
+
+// @function _merge(target: Object, source: Object, keySet: Set): Object
+// Recursively deep merges two objects and returns the result.
+function _merge(target, source, keySet) {
+	var obj = target ? target : {};
+	for (const key in source) {
+		if (_isObject(source[key]) && !keySet.has(source)) {
+			keySet.add(source);
+			if (!obj[key]) {
+				Object.assign(target, {[key]: {}});
+			}
+			obj[key] = _merge(obj[key], source[key], keySet);
+		} else if (Array.isArray(obj[key]) || Array.isArray(source[key])) {
+			let newValue = obj[key] ? [].concat(obj[key]) : [];
+			newValue = source[key] ? newValue.concat(source[key]) : newValue;
+			// remove duplicates
+			let set = new Set(newValue);
+			Object.assign(obj, {[key]: Array.from(set)});
+		} else {
+			Object.assign(obj, {[key]: source[key]});
+		}
+	}
+	return obj;
 }
