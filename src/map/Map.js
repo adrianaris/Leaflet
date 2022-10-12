@@ -1,5 +1,5 @@
 import * as Util from '../core/Util';
-import {Evented} from '../core/Events';
+import {MapBase} from './MapBase';
 import {EPSG3857} from '../geo/crs/CRS.EPSG3857';
 import {Point, toPoint} from '../geometry/Point';
 import {Bounds, toBounds} from '../geometry/Bounds';
@@ -29,7 +29,7 @@ import {PosAnimation} from '../dom/PosAnimation';
  *
  */
 
-export var Map = Evented.extend({
+export var Map = MapBase.extend({
 
 	options: {
 		// @section Map State Options

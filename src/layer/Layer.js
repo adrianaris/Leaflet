@@ -1,5 +1,5 @@
 import {Evented} from '../core/Events';
-import {Map} from '../map/Map';
+import {MapBase} from '../map/MapBase';
 import * as Util from '../core/Util';
 
 /*
@@ -151,7 +151,7 @@ export var Layer = Evented.extend({
  *
  * @section Methods for Layers and Controls
  */
-Map.include({
+MapBase.include({
 	// @method addLayer(layer: Layer): this
 	// Adds the given layer to the map
 	addLayer: function (layer) {

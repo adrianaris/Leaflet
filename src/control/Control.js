@@ -1,6 +1,6 @@
 
 import {Class} from '../core/Class';
-import {Map} from '../map/Map';
+import {MapBase} from '../map/MapBase';
 import * as Util from '../core/Util';
 import * as DomUtil from '../dom/DomUtil';
 
@@ -130,7 +130,7 @@ export var control = function (options) {
 /* @namespace Map
  * @section Methods for Layers and Controls
  */
-Map.include({
+MapBase.include({
 	// @method addControl(control: Control): this
 	// Adds the given control to the map
 	addControl: function (control) {
