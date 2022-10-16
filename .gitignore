@@ -10,6 +10,7 @@ _site
 dist/*.js
 dist/*.map
 dist/reference.html
+dist/src
 coverage/
 *.js.html
 .mailmap

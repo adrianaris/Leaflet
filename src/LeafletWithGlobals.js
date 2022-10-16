@@ -2,7 +2,6 @@ import * as L from './Leaflet';
 export * from './Leaflet';
 
 var globalL = L.extend(L, {noConflict: noConflict});
-export default globalL;
 
 var globalObject = getGlobalObject();
 var oldL = globalObject.L;
@@ -22,3 +21,5 @@ function getGlobalObject() {
 
 	throw new Error('Unable to locate global object.');
 }
+
+export default globalL;

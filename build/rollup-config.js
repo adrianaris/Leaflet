@@ -34,11 +34,12 @@ const config = {
 if (!watch) {
 	config.output.push(
 		{
-			file: pkg.module,
+			dir: 'dist',
 			format: 'es',
 			banner: banner,
 			sourcemap: true,
-			freeze: false
+			freeze: false,
+			preserveModules: true
 		}
 	);
 }

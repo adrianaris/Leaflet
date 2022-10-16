@@ -32,8 +32,9 @@
     "ssri": "^9.0.1",
     "uglify-js": "^3.17.1"
   },
+  "sideEffects": false,
   "main": "dist/leaflet-src.js",
-  "module": "dist/leaflet-src.esm.js",
+  "module": "dist/src/LeafletWithGlobals.js",
   "style": "dist/leaflet.css",
   "files": [
     "dist",
